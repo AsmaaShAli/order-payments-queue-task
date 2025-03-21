@@ -13,14 +13,18 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->decimal('amount');
             $table->enum('status', ['pending', 'processing', 'completed', 'failed'])
                 ->default('pending');
             $table->timestamps();
         });
-    }
 
+        Schema::table('orders', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+
+    }
     /**
      * Reverse the migrations.
      */
